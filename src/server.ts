@@ -80,11 +80,38 @@ app.get('/api/calculate/divide/:a/:b', (req: Request, res: Response) => {
   }
 });
 
+// Kare Hesaplama Endpoint'i
+app.get('/api/calculate/square/:a', (req: Request, res: Response) => {
+  try {
+    const a = parseFloat(req.params.a);
+    
+    if (isNaN(a)) {
+      return res.status(400).json({ error: 'Geçersiz sayısal değer' });
+    }
+    
+    const result = calculatorService.square(a);
+    res.json({ operation: 'square', a, result });
+  } catch (error) {
+    res.status(500).json({ error: 'Bir hata oluştu' });
+  }
+});
+
 // JSON API tüm işlemler için
 app.post('/api/calculate', (req: Request, res: Response) => {
   try {
     const { operation, a, b } = req.body;
     
+    if (operation === 'square') {
+      // Kare işlemi için sadece bir sayı gerekli
+      if (typeof a !== 'number') {
+        return res.status(400).json({ error: 'a sayısal bir değer olmalıdır' });
+      }
+      
+      const result = calculatorService.square(a);
+      return res.json({ operation, a, result });
+    }
+    
+    // Diğer işlemler için iki sayı gerekli
     if (typeof a !== 'number' || typeof b !== 'number') {
       return res.status(400).json({ error: 'a ve b sayısal değerler olmalıdır' });
     }
@@ -105,7 +132,7 @@ app.post('/api/calculate', (req: Request, res: Response) => {
         result = calculatorService.divide(a, b);
         break;
       default:
-        return res.status(400).json({ error: 'Geçersiz işlem. Kullanılabilir işlemler: add, subtract, multiply, divide' });
+        return res.status(400).json({ error: 'Geçersiz işlem. Kullanılabilir işlemler: add, subtract, multiply, divide, square' });
     }
     
     res.json({ operation, a, b, result });
