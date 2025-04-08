@@ -1,6 +1,6 @@
 # Hesap Makinesi API
 
-Bu proje, 4 işlem (toplama, çıkarma, çarpma, bölme) yapabilen bir REST API sunucusudur. TypeScript ve Express.js kullanılarak geliştirilmiştir.
+Bu proje, temel matematiksel işlemleri (toplama, çıkarma, çarpma, bölme, kare alma) yapabilen bir REST API sunucusudur. TypeScript ve Express.js kullanılarak geliştirilmiştir.
 
 ## Kurulum
 
@@ -27,17 +27,26 @@ npm start
 - `GET /api/calculate/subtract/:a/:b`: İlk sayıdan ikinci sayıyı çıkarır
 - `GET /api/calculate/multiply/:a/:b`: İki sayıyı çarpar
 - `GET /api/calculate/divide/:a/:b`: İlk sayıyı ikinci sayıya böler
+- `GET /api/calculate/square/:a`: Bir sayının karesini hesaplar
 
 ### POST Metodu
 
 - `POST /api/calculate`: JSON formatında işlem yapar
 
-Örnek istek:
+Örnek istek (iki operand gerektiren işlemler için):
 ```json
 {
   "operation": "add", // add, subtract, multiply, divide
   "a": 5,
   "b": 3
+}
+```
+
+Örnek istek (tek operand gerektiren işlemler için):
+```json
+{
+  "operation": "square",
+  "a": 5
 }
 ```
 
@@ -48,6 +57,15 @@ npm start
   "a": 5,
   "b": 3,
   "result": 8
+}
+```
+
+Kare hesaplama için örnek cevap:
+```json
+{
+  "operation": "square",
+  "a": 5,
+  "result": 25
 }
 ```
 
