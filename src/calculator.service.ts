@@ -34,4 +34,11 @@ export class CalculatorService {
     }
     return a / b;
   }
+
+  /**
+   * Bir sayının karesini hesaplar
+   */
+  square(a: number): number {
+    return a * a;
+  }
 }
