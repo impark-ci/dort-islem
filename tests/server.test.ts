@@ -76,6 +76,34 @@ describe('Calculator API', () => {
     });
   });
 
+  describe('GET /api/calculate/square/:a', () => {
+    it('sayının karesini hesaplamalı', async () => {
+      const res = await request(app).get('/api/calculate/square/4');
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({
+        operation: 'square',
+        a: 4,
+        result: 16
+      });
+    });
+
+    it('negatif sayının karesini hesaplamalı', async () => {
+      const res = await request(app).get('/api/calculate/square/-3');
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({
+        operation: 'square',
+        a: -3,
+        result: 9
+      });
+    });
+
+    it('geçersiz parametre için hata döndürmeli', async () => {
+      const res = await request(app).get('/api/calculate/square/abc');
+      expect(res.status).toBe(400);
+      expect(res.body).toHaveProperty('error');
+    });
+  });
+
   describe('POST /api/calculate', () => {
     it('toplama işlemi yapmalı', async () => {
       const res = await request(app)
@@ -142,6 +170,21 @@ describe('Calculator API', () => {
         a: 10,
         b: 2,
         result: 5
+      });
+    });
+
+    it('kare hesaplama işlemi yapmalı', async () => {
+      const res = await request(app)
+        .post('/api/calculate')
+        .send({
+          operation: 'square',
+          a: 5
+        });
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({
+        operation: 'square',
+        a: 5,
+        result: 25
       });
     });
 

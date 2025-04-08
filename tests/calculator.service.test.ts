@@ -76,4 +76,22 @@ describe('CalculatorService', () => {
       }).toThrow('Sıfıra bölme hatası');
     });
   });
+
+  describe('square', () => {
+    it('pozitif sayının karesini hesaplamalı', () => {
+      expect(calculatorService.square(4)).toBe(16);
+    });
+
+    it('negatif sayının karesini hesaplamalı', () => {
+      expect(calculatorService.square(-3)).toBe(9);
+    });
+
+    it('ondalıklı sayının karesini hesaplamalı', () => {
+      expect(calculatorService.square(1.5)).toBe(2.25);
+    });
+
+    it('sıfırın karesini hesaplamalı', () => {
+      expect(calculatorService.square(0)).toBe(0);
+    });
+  });
 });
